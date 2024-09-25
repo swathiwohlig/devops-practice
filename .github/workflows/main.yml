@@ -35,27 +35,3 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/assessment-app1:latest1
-
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'v1.21.0'  # Specify the kubectl version you need
-
-      - name: Create .kube directory
-        run: mkdir -p $HOME/.kube
-
-      - name: Set up Kubeconfig
-        run: echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
-
-      - name: Debug Kubeconfig
-        run: cat $HOME/.kube/config
-
-
-      - name: Apply Kubernetes manifests
-        run: |
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/service.yaml
